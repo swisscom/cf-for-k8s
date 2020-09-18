@@ -8429,7 +8429,7 @@ webhooks:
   sideEffects: None
 ---
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   annotations:
     kbld.k14s.io/images: |
@@ -8450,6 +8450,10 @@ spec:
     matchLabels:
       app: istio-ingressgateway
       istio: ingressgateway
+  strategy:
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 25%
   template:
     metadata:
       annotations:
@@ -8580,9 +8584,7 @@ spec:
         ports:
         - containerPort: 15021
         - containerPort: 8080
-          hostPort: 80
         - containerPort: 8443
-          hostPort: 443
         - containerPort: 15443
         - containerPort: 15090
           name: http-envoy-prom
@@ -8700,9 +8702,6 @@ spec:
       - hostPath:
           path: /var/lib/docker/containers
         name: dockercontainers
-  updateStrategy:
-    rollingUpdate:
-      maxUnavailable: 1
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -9105,4 +9104,4 @@ metadata:
   namespace: istio-system
 spec:
   mtls:
-    mode: STRICT
+    mode: PERMISSIVE

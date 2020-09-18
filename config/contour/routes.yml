@@ -1,0 +1,50 @@
+#@ load("@ytt:data", "data")
+#@ load("/namespaces.star", "system_namespace", "workloads_namespace", "workloads_staging_namespace")
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: cf-api-external-virtual-service
+  namespace: #@ system_namespace()
+spec:
+  virtualhost:
+    fqdn: #@ "api.contour." + data.values.system_domain
+  routes:
+    - conditions:
+      - prefix: /
+      services:
+        - name: capi
+          port: 80
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: log-cache-external-virtual-service
+  namespace: #@ system_namespace()
+spec:
+  virtualhost:
+    fqdn: #@ "log-cache.contour." + data.values.system_domain
+  routes:
+    - conditions:
+      - prefix: /
+      services:
+        - name: log-cache
+          port: 8083
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: uaa-external-virtual-service
+  namespace: #@ system_namespace()
+spec:
+  virtualhost:
+    fqdn: #@ "uaa.contour." + data.values.system_domain
+  routes:
+    - conditions:
+      - prefix: /
+      services:
+        - name: uaa
+          port: 8080
