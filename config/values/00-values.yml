@@ -65,6 +65,7 @@ app_registry:
   repository_prefix: ""
   username: ""
   password: ""
+  ca: ""
 
 remove_resource_requirements: false
 add_metrics_server_components: false

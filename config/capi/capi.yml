@@ -59,6 +59,7 @@ kpack:
     repository_prefix: #@ data.values.app_registry.repository_prefix
     username: #@ data.values.app_registry.username
     password: #@ data.values.app_registry.password
+    ca: #@ data.values.app_registry.ca
 #@ end
 
 #@ capi = library.get("capi-k8s-release")

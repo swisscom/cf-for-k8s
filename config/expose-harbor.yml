@@ -1,0 +1,18 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: harbor-virtual-service
+  namespace: harbor
+spec:
+  gateways:
+  - cf-system/istio-ingressgateway
+  hosts:
+  - harbor.jwal.k8s.capi.land
+  http:
+  - route:
+    - destination:
+        host: harbor-harbor-registry.harbor.svc.cluster.local
+        port:
+          number: 5000
+
