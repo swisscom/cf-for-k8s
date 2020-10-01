@@ -31,7 +31,7 @@ data:
 #@ daemonset = overlay.subset({"kind":"DaemonSet","metadata":{"name":"istio-ingressgateway"}})
 #@ deployment = overlay.subset({"kind":"Deployment","metadata":{"name":"istio-ingressgateway"}})
 
-#@overlay/match by=overlay.or_op(daemonset, deployment)
+#@overlay/match by=overlay.or_op(daemonset, deployment),expects="0+"
 ---
 metadata:
   #@overlay/match missing_ok=True
@@ -44,7 +44,7 @@ metadata:
 --- #@ gateway(data.values.system_domain, data.values.app_domains, system_namespace(), workloads_namespace(), data.values.gateway.https_only)
 
 #! This will set overlay a static IP for the istio load balancer.
-#@overlay/match by=overlay.subset({"kind": "Service", "metadata":{"name": "istio-ingressgateway"}})
+#@overlay/match by=overlay.subset({"kind": "Service", "metadata":{"name": "istio-ingressgateway"}}),expects="0+"
 ---
 #@ if data.values.load_balancer.static_ip:
 spec:
