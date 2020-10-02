@@ -30,7 +30,7 @@ data:
 type: kubernetes.io/tls
 
 #! the following overlay ensures the above Secret is created before the ingressgateway Deployment since we're not using SDS
-#@overlay/match by=overlay.subset({"kind":"Deployment","metadata":{"name":"envoy"}}),expects="0+"
+#@overlay/match by=overlay.subset({"kind":"DaemonSet","metadata":{"name":"envoy"}}),expects="1+"
 ---
 metadata:
   #@overlay/match missing_ok=True
@@ -56,7 +56,43 @@ spec:
       services:
         - name: #@ service
           port: #@ port
+          validation:
+            caSecret: istio-ca-cert
+            subjectName: #@ host + "." + data.values.system_domain
 #@ end
+---
+apiVersion: projectcontour.io/v1
+kind: TLSCertificateDelegation
+metadata:
+  name: istio-ca-cert
+  namespace: projectcontour
+spec:
+  delegations:
+    - secretName: istio-ca-cert
+      targetNamespaces:
+      - "*"
+---
+#@overlay/match by=overlay.subset({"kind":"Service","metadata":{"name":"capi", "namespace": system_namespace() }}),expects="1+"
+metadata:
+  #@overlay/match missing_ok=True
+  annotations:
+    #@overlay/match missing_ok=True
+    projectcontour.io/upstream-protocol.tls: "80"
+---
+#@overlay/match by=overlay.subset({"kind":"Service","metadata":{"name":"uaa", "namespace": system_namespace() }}),expects="1+"
+metadata:
+  #@overlay/match missing_ok=True
+  annotations:
+    #@overlay/match missing_ok=True
+    projectcontour.io/upstream-protocol.tls: "8080"
+---
+#@overlay/match by=overlay.subset({"kind":"Service","metadata":{"name":"log-cache", "namespace": system_namespace() }}),expects="1+"
+metadata:
+  #@overlay/match missing_ok=True
+  annotations:
+    #@overlay/match missing_ok=True
+    projectcontour.io/upstream-protocol.tls: "8083"
+---
 
 --- #@ route("cf-api-external-virtual-service", "api", "capi", 80)
 --- #@ route("log-cache-external-virtual-service", "log-cache", "log-cache", 8083)
@@ -64,3 +100,4 @@ spec:
 --- #@ route("loginwild", "*.login", "uaa", 8080)
 --- #@ route("uaa", "uaa", "uaa", 8080)
 --- #@ route("uaawild", "*.uaa", "uaa", 8080)
+
