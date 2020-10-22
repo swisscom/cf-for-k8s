@@ -33,6 +33,9 @@ blobstore:
   buildpack_directory_key: #@ data.values.blobstore.buildpack_directory_key
   aws_signature_version: #@ data.values.blobstore.aws_signature_version
 
+  #@overlay/match-child-defaults missing_ok=True
+  fog_aws_storage_options: #@ data.values.blobstore.fog_aws_storage_options
+
 cc:
   log_level: #@ data.values.capi.log_level
 
