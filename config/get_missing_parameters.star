@@ -41,9 +41,6 @@ app_registry.password
 app_registry.repository_prefix
 app_registry.username
 blobstore.secret_access_key
-capi.cc_username_lookup_client_secret
-capi.cf_api_controllers_client_secret
-capi.database.encryption_key
 capi.database.password
 cf_admin_password
 internal_certificate.ca
@@ -52,7 +49,6 @@ internal_certificate.key
 system_certificate.crt
 system_certificate.key
 system_domain
-uaa.admin_client_secret
 uaa.database.password
 uaa.encryption_key.passphrase
 uaa.jwt_policy.signing_key
