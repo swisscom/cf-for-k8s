@@ -10,10 +10,10 @@ directories:
   path: config/capi/_ytt_lib/capi-k8s-release
 - contents:
   - git:
-      commitTitle: 'ci: use 1.0.0-rc.2 as the source branch for the upgrade test...'
-      sha: d5a7920bc6da6b2a1af407a2061a8979fec3f568
+      commitTitle: Update routecontroller image digest to sha256:aa79bb476ee8d8ed1dd77c216cf1c4e79abf7599e32181ae2dcde1c2f83bd9fc
+      sha: 2d2dc2e83d21928c12f4c930f042554fd29507bf
       tags:
-      - v0.0.6-292-gd5a7920
+      - v0.0.6-319-g2d2dc2e
     path: .
   path: config/networking/_ytt_lib/cf-k8s-networking
 - contents:
