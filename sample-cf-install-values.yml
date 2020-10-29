@@ -56,8 +56,8 @@ workloads_certificate:
 #! certificate, private key, and certificate authority used internally within the CF installation (i.e. cf-system.svc.cluster.local).
 #! - should be valid for *.cf-system.svc.cluster.local
 internal_certificate:
-  crt: &crt internal_certificate
-  key: &key internal_private_key
+  crt: internal_certificate
+  key: internal_private_key
   ca: internal_certificate_ca
 
 uaa:
